@@ -15,3 +15,8 @@ class BreakpointReachedException(PolynomialException):
 class NoRootException(PolynomialException):
     def __init__(self, message=""):
         PolynomialException.__init__(self, message)
+
+
+class NotARootException(PolynomialException):
+    def __init__(self, message=''):
+        PolynomialException.__init__(self, message)

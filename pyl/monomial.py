@@ -60,12 +60,37 @@ class Monomial:
 
     def __add_mono(self, mono):
         if self.__power == mono.power:
-            if self.__factor + mono.factor <= self.__EPSILON:
+            if abs(self.__factor + mono.factor) <= self.__EPSILON:
                 return Zero()
             return Monomial(self.__factor + mono.factor, self.__power)
         else:
             from pyl.polynomial import Polynomial
             return Polynomial([self, mono])
+
+    def __sub__(self, other):
+        if isinstance(other, Monomial):
+            return self.__sub_monomial(other)
+        else:
+            return self.__sub_number(other)
+
+    def __rsub__(self, other):
+        return self.__sub__(other)
+
+    def __sub_monomial(self, mono):
+        if self.power == mono.power:
+            if abs(self.__factor - mono.factor) <= self.__EPSILON:
+                return Zero()
+            return Monomial(self.__factor - mono.factor, self.__power)
+        else:
+            from pyl.polynomial import Polynomial
+            return Polynomial([self, mono])
+
+    def __sub_number(self, number):
+        if complex(number) == complex(0.0, 0.0):
+            return Monomial(self.__factor, self.__power)
+        mono = Monomial(-number, 0)
+        from pyl.polynomial import Polynomial
+        return Polynomial([self, mono])
 
 
 class Zero(Monomial):
